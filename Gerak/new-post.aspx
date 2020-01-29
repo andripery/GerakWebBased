@@ -1,4 +1,39 @@
 ﻿<!DOCTYPE html>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data.SqlClient.SqlDataReader" %>
+<script runat="server">
+
+    Protected Sub btnInsert_Click(sender As Object, e As EventArgs)
+        Dim koneksi As New SqlConnection
+        Dim xDataset As New DataSet
+        Dim xCommand As New SqlCommand
+        Dim xAdapter As New SqlDataAdapter
+        Dim strSql As String
+
+        Dim judul = jobtitle.Text
+        Dim budget = jobbudget.Text
+        Dim tanggal = jobdate.Text
+        Dim deskripsi = jobdesc.Value
+
+        koneksi.ConnectionString =
+        "Data Source=DESKTOP-Q475H4P\PER;Initial Catalog=Gerak;Trusted_connection=Yes"
+        koneksi.Open()
+        strSql = "INSERT INTO pekerjaan (judul_pk,budget_pk,tanggal_pk,deskripsi_pk)
+        VALUES ('" + judul + "','" + budget + "','" + tanggal + "','" + deskripsi + "');"
+
+        xCommand = New SqlCommand(strSql, koneksi)
+        xCommand.ExecuteNonQuery()
+
+        koneksi.Close()
+
+        jobtitle.Text = ""
+        jobbudget.Text = ""
+        jobdate.Text = ""
+        jobdesc.Value = ""
+    End Sub
+</script>
+
 <html lang="en">
 
 <head>
@@ -72,46 +107,40 @@
 
         <div class="col-md-12 col-lg-8 mb-5">
 
-          <form action="#" class="p-5 bg-white">
+          <form action="#" class="p-5 bg-white" runat="server">
 
             <div class="row form-group">
               <div class="col-md-12 mb-3 mb-md-0">
                 <label class="font-weight-bold" for="fullname">Job Title</label>
-                <input type="text" id="fullname" class="form-control" placeholder="">
+                  <asp:TextBox ID="jobtitle" class="form-control" runat="server"></asp:TextBox>
               </div>
             </div>
 
             <div class="row form-group mb-3">
               <div class="col-md-12 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="fullname">Company</label>
-                <input type="text" id="fullname" class="form-control" placeholder="">
+                <label class="font-weight-bold" for="fullname">Budget</label>
+                <asp:TextBox ID="jobbudget" class="form-control" runat="server"></asp:TextBox>
               </div>
             </div>
 
             <div class="row form-group mb-3">
               <div class="col-md-12 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="fullname">Category</label>
-                <input type="text" id="fullname" class="form-control" placeholder="">
-              </div>
-            </div>
-
-            <div class="row form-group mb-3">
-              <div class="col-md-12 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="fullname">Location</label>
-                <input type="text" id="fullname" class="form-control" placeholder="">
+                <label class="font-weight-bold" for="fullname">Date</label>
+                <asp:TextBox ID="jobdate" class="form-control" runat="server"></asp:TextBox>
               </div>
             </div>
 
             <div class="row form-group">
               <div class="col-md-12"><label class="font-weight-bold" for="fullname">Job Description</label></div>
               <div class="col-md-12 mb-3 mb-md-0">
-                <textarea name="" class="form-control" id="" cols="30" rows="5"></textarea>
+                  <textarea name="" class="form-control" id="jobdesc" cols="30" rows="5" runat="server"></textarea>
               </div>
             </div>
 
             <div class="row form-group">
               <div class="col-md-12">
-                <input type="submit" value="Post" class="btn btn-primary  py-2 px-5">
+                <%--<input id="btnInsert" type="submit" value="Post" class="btn btn-primary  py-2 px-5" runat="server" onclick="btnInsert_Click">--%>
+<asp:Button ID="btnInsert" class="btn btn-primary  py-2 px-5" runat="server" onclick="btnInsert_Click" Text="Post" />
               </div>
             </div>
 
